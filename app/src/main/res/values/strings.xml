@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Hooligan Wars Android</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="signUpText">Sign Up</string>
+    <string name="loginText">Login</string>
+    <string name="exitText">Exit</string>
+    <string name="title_activity_sign_up_">SignUp_Activity</string>
+    <string name="playerNameText">Player name</string>
+    <string name="passwordText">Password</string>
+    <string name="playerNameHint">Enter player name</string>
+    <string name="loginHint">Choose login</string>
+    <string name="passwordHint">Choose password</string>
+    <string name="nameErrorText">This name is invalid!(Only aA-zZ,0-9 characters allowed)</string>
+    <string name="loginErrorText">Login already used</string>
+    <string name="passwordErrorText">Password doesnt meet the requirenments (6-12 characters)</string>
+    <string name="title_activity_login_">Login_Activity</string>
+    <string name="title_activity_character_">Character_Activity</string>
+    <string name="title_activity_battle_">Battle_Activity</string>
+
+</resources>

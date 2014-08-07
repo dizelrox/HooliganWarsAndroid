@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.dizelrox.hooliganwarsandroid" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:allowBackup="true"
+        android:name=".Logic.MyApplication"
+        android:icon="@drawable/ic_launcher"
+
+
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        <service android:enabled="true" android:name=".Logic.BackgroundSoundService" />
+        <service android:enabled="true" android:name=".Logic.SoundService" />
+        <service android:name=".Logic.SignUpService" />
+        <activity
+            android:name=".GUI.Main_Activity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".GUI.SignUp_Activity"
+            android:label="@string/title_activity_sign_up_" >
+        </activity>
+        <activity
+            android:name=".GUI.Login_Activity"
+            android:label="@string/title_activity_login_" >
+        </activity>
+        <activity
+            android:name=".GUI.Character_Activity"
+            android:label="@string/title_activity_character_" >
+        </activity>
+        <activity
+            android:name=".GUI.Battle_Activity"
+            android:label="@string/title_activity_battle_" >
+        </activity>
+    </application>
+
+</manifest>

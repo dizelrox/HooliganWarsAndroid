@@ -1,0 +1,342 @@
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameLayout"
+    android:background="@drawable/background_no_header">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:weightSum="4"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_weight="3"
+            android:weightSum="5"
+            android:layout_height="0dp" >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="fill_parent"
+                android:gravity="center_horizontal"
+                android:weightSum="1" >
+
+                <ImageButton
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/headImage"
+                    android:onClick="unwearItem"
+                    android:tag="0"
+                    android:src="@drawable/default_big_image"
+                    android:layout_weight="0.25"
+
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitCenter" />
+
+                <ImageButton
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chestImage"
+                    android:src="@drawable/default_big_image"
+                    android:layout_weight="0.25"
+                    android:layout_marginTop="10dp"
+                    android:onClick="unwearItem"
+                    android:tag="1"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter" />
+
+                <ImageButton
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/stomachImage"
+                    android:src="@drawable/default_big_image"
+                    android:layout_weight="0.25"
+                    android:onClick="unwearItem"
+                    android:tag="2"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitCenter" />
+
+                <ImageButton
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/legsImage"
+                    android:src="@drawable/default_big_image"
+                    android:layout_weight="0.25"
+                    android:onClick="unwearItem"
+                    android:tag="3"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/playerShopIcon"
+                    android:src="@drawable/warrior_shop_6" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Button"
+                    android:onClick="speakButton"
+                    android:id="@+id/button" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:weightSum="1"
+                android:layout_height="fill_parent"
+                android:gravity="center_horizontal">
+
+                <ImageButton
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weaponImage"
+                    android:src="@drawable/default_big_image"
+                    android:layout_weight="0.08"
+                    android:onClick="unwearItem"
+                    android:tag="4"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/textView"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.92" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal" >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2"
+                android:layout_marginRight="70dp" >
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel0"
+                        android:onClick="tryToWearItem"
+                        android:tag="0"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel2"
+                        android:onClick="tryToWearItem"
+                        android:tag="2"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel4"
+                        android:onClick="tryToWearItem"
+                        android:tag="4"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel6"
+                        android:onClick="tryToWearItem"
+                        android:tag="6"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel8"
+                        android:onClick="tryToWearItem"
+                        android:tag="8"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel10"
+                        android:onClick="tryToWearItem"
+                        android:tag="10"
+                        android:src="@drawable/default_big_image" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout" >
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel1"
+                        android:onClick="tryToWearItem"
+                        android:tag="1"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel3"
+                        android:onClick="tryToWearItem"
+                        android:tag="3"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel5"
+                        android:onClick="tryToWearItem"
+                        android:tag="5"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel7"
+                        android:onClick="tryToWearItem"
+                        android:tag="7"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel9"
+                        android:onClick="tryToWearItem"
+                        android:tag="9"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/armorLabel11"
+                        android:onClick="tryToWearItem"
+                        android:tag="11"
+                        android:src="@drawable/default_big_image" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout4"
+                android:gravity="right" >
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weaponLabel0"
+                        android:onClick="tryToWearItem"
+                        android:tag="12"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weaponLabel2"
+                        android:onClick="tryToWearItem"
+                        android:tag="14"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weaponLabel4"
+                        android:onClick="tryToWearItem"
+                        android:tag="16"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weaponLabel6"
+                        android:onClick="tryToWearItem"
+                        android:tag="18"
+                        android:src="@drawable/default_big_image" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout3" >
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weaponLabel1"
+                        android:onClick="tryToWearItem"
+                        android:tag="13"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weaponLabel3"
+                        android:onClick="tryToWearItem"
+                        android:tag="15"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weaponLabel5"
+                        android:onClick="tryToWearItem"
+                        android:tag="17"
+                        android:src="@drawable/default_big_image" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weaponLabel7"
+                        android:onClick="tryToWearItem"
+                        android:tag="19"
+                        android:src="@drawable/default_big_image" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

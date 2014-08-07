@@ -1,0 +1,48 @@
+<RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/background">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="184dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signUpText"
+            android:id="@+id/mainSignUpButton"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textColor="#ffffffff"
+            android:onClick="signUp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loginText"
+            android:id="@+id/mainLoginButton"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:onClick="login"
+            android:textColor="#ffffffff" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exitText"
+            android:id="@+id/exitButton"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textColor="#ffffffff" />
+    </LinearLayout>
+</RelativeLayout>
