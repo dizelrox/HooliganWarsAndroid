@@ -98,7 +98,7 @@ public class Login_Activity extends Activity {
                 publishProgress("Connecting to database....");
                 Thread.sleep(1000);
 
-                String link = ("http://192.168.0.101:8080/HW_Servlet/GetUserFromDB?" +
+                String link = ("http://dizel-services.ddns.net:8080/HW_Servlet/GetUserFromDB?" +
                         "&login="+URLEncoder.encode(login,"UTF-8")+
                         "&password="+URLEncoder.encode(password,"UTF-8"));
 

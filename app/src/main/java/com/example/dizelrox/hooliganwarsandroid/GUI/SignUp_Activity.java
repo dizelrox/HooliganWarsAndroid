@@ -121,7 +121,7 @@ public class SignUp_Activity extends Activity {
     public class SignUpAsync extends AsyncTask <Object,String,Player>
     {
         String output = null;
-
+        Player player;
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
@@ -135,7 +135,7 @@ public class SignUp_Activity extends Activity {
 
             try {
 
-                Player player = (Player) params[0];
+                player = (Player) params[0];
                 String login = (String) params[1];
                 String password = (String) params[2];
 
@@ -144,7 +144,7 @@ public class SignUp_Activity extends Activity {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 String json = gson.toJson(player);
 
-                String link = ("http://192.168.0.101:8080/HW_Servlet/AddUserToDB?" +
+                String link = ("http://dizel-services.ddns.net:8080/HW_Servlet/AddUserToDB?" +
                         "jsonObject="+ URLEncoder.encode(json, "UTF-8")+
                         "&login="+URLEncoder.encode(login,"UTF-8")+
                         "&password="+URLEncoder.encode(password,"UTF-8"));
@@ -184,6 +184,7 @@ public class SignUp_Activity extends Activity {
             else
             {
                 Intent characterFrame = new Intent(SignUp_Activity.this,Character_Activity.class);
+                characterFrame.putExtra("player",player);
                 startActivity(characterFrame);
             }
             super.onPostExecute(aVoid);
