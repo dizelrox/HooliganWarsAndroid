@@ -14,30 +14,18 @@ public class Player implements Serializable
 {
 
     private String loginToDatabase;
-
     private String shopIcon;
-
     private String battleIcon;
-
     private int strengthFactor;
-
     private double defenceFactor;
-
     private TreeSet<Item> items = new TreeSet<Item>();
     private String name;
-
     private int health;
-
     private Type defenceArea;
-
     private Type attackArea;
-
     private String consoleText;
-
     private boolean[] currentArmors;
-
     private boolean[] currentWeapons;
-
 
     public Player(String name) //Player constructor
     {

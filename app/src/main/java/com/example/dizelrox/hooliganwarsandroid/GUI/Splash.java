@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,7 +67,7 @@ public class Splash extends Activity {
                        new TextToSpeech.OnInitListener() {
                           @Override
                           public void onInit(int status) {
-                              if(status != TextToSpeech.ERROR){
+                              if(status != TextToSpeech.ERROR && MyApplication.ttobj != null){
                                MyApplication.ttobj.setLanguage(Locale.US);
                               }
                           }
@@ -135,15 +134,16 @@ public class Splash extends Activity {
                 if(login.compareTo("never saved") == 0) {
                     Intent mainMenu = new Intent(Splash.this, Main_Activity.class);
                     startActivity(mainMenu);
+                    finish();
                 }
                 else
                 {
                     new LoginAsync().execute(login,password);
                 }
-                MyApplication.player = MediaPlayer.create(Splash.this, R.raw.background1);
+                MyApplication.player = MediaPlayer.create(Splash.this, R.raw.background);
                 MyApplication.player.setLooping(true); // Set looping
                 MyApplication.player.setVolume(100,100);
-                //MyApplication.player.start();
+                MyApplication.player.start();
             }
         }
     }
@@ -203,7 +203,7 @@ public class Splash extends Activity {
                 Intent characterFrame = new Intent(Splash.this, Character_Activity.class);
                 characterFrame.putExtra("player",this.player);
                 startActivity(characterFrame);
-                Splash.this.finish();
+                finish();
             }
 
             super.onPostExecute(player);
