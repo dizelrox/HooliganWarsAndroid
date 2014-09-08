@@ -2,6 +2,7 @@ package com.example.dizelrox.hooliganwarsandroid.GUI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,9 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.dizelrox.hooliganwarsandroid.Logic.MyApplication;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Player;
@@ -26,7 +29,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 
 public class Login_Activity extends Activity {
     EditText loginInput;
@@ -34,6 +41,7 @@ public class Login_Activity extends Activity {
     TextView errorTextView;
     ProgressBar loginProgressBar;
     Button loginButton;
+    ToggleButton rememberMe;
 
 
     @Override
@@ -45,6 +53,15 @@ public class Login_Activity extends Activity {
         errorTextView = (TextView) findViewById(R.id.errorTextView);
         loginProgressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
         loginButton = (Button) findViewById(R.id.loginButton);
+        rememberMe = (ToggleButton) findViewById(R.id.rememberMe);
+
+        final ImageButton login_mute = (ImageButton) findViewById(R.id.login_mute);
+        login_mute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.muteClicked(login_mute);
+            }
+        });
     }
 
 
@@ -91,39 +108,55 @@ public class Login_Activity extends Activity {
         @Override
         protected Player doInBackground(String... params) {
 
-            try {
+
                 String login = (String) params[0];
                 String password = (String) params[1];
 
-                publishProgress("Connecting to database....");
+            try {
+                publishProgress("Connecting to server");
                 Thread.sleep(1000);
-
-                String link = ("http://dizel-services.ddns.net:8080/HW_Servlet/GetUserFromDB?" +
-                        "&login="+URLEncoder.encode(login,"UTF-8")+
-                        "&password="+URLEncoder.encode(password,"UTF-8"));
-
-                publishProgress("Searching for player...");
+                Socket clientSocket = new Socket("dizel-services.ddns.net", 55555);
+                publishProgress("Connected!");
                 Thread.sleep(1000);
+                ObjectOutputStream clientOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+                String command = "Let me in!";
+                clientOutput.writeObject(command);
+                clientOutput.writeObject(login);
+                clientOutput.writeObject(password);
+                ObjectInputStream clientInput = new ObjectInputStream(clientSocket.getInputStream());
+                output = (String) clientInput.readObject();
+                if(output.compareTo("Player found") == 0)
+                {
+                    if(rememberMe.isChecked())
+                    {
+                        SharedPreferences preferences = getSharedPreferences("logged history",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("login",login);
+                        editor.putString("password",password);
+                        editor.commit();
 
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(link);
+                        String ll = preferences.getString("login","never saved");
+                        String pp = preferences.getString("password","never saved");
 
-                HttpResponse httpResponse = httpClient.execute(httpGet);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                output = EntityUtils.toString(httpEntity);
+                        System.out.println(ll+"  "+pp);
+                    }
+                    player = (Player) clientInput.readObject();
+                }
 
-
-
-                publishProgress("Receiving player...");
-                Thread.sleep(1000);
-
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
+
+
             return null;
         }
+
 
         @Override
         protected void onPostExecute(Player player) {
@@ -131,16 +164,15 @@ public class Login_Activity extends Activity {
             loginButton.setVisibility(View.VISIBLE);
             loginProgressBar.setVisibility(View.GONE);
 
-            if(output.compareTo("Player not found\r\n") == 0)
+            if(output.compareTo("Player not found") == 0)
                 Toast.makeText(getApplicationContext(), "Player not found",
                         Toast.LENGTH_SHORT).show();
             else
             {
-                Gson gson = new Gson();
-                player = gson.fromJson(output, Player.class);
                 Intent characterFrame = new Intent(Login_Activity.this, Character_Activity.class);
-                characterFrame.putExtra("player",player);
+                characterFrame.putExtra("player",this.player);
                 startActivity(characterFrame);
+                finish();
             }
 
             super.onPostExecute(player);

@@ -1,23 +1,35 @@
 package com.example.dizelrox.hooliganwarsandroid.GUI;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.dizelrox.hooliganwarsandroid.Logic.Armor;
 import com.example.dizelrox.hooliganwarsandroid.Logic.GameInitialize;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Item;
 import com.example.dizelrox.hooliganwarsandroid.Logic.MyApplication;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Player;
+import com.example.dizelrox.hooliganwarsandroid.Logic.SoundService;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Type;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Weapon;
 import com.example.dizelrox.hooliganwarsandroid.R;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.Locale;
 
 public class Character_Activity extends Activity {
@@ -25,7 +37,7 @@ public class Character_Activity extends Activity {
     Armor[] armArray;
     Weapon[] wepArray;
     Player player;
-    GameInitialize game;
+    public static GameInitialize game;
     ImageButton armorLabelsArray[] = new ImageButton[12];
 
     ImageButton weaponLabelsArray[] = new ImageButton[8];
@@ -37,7 +49,7 @@ public class Character_Activity extends Activity {
     ImageButton weaponImage;
     ImageView playerIcon;
 
-
+    TextView playerStat;
 
 
     @Override
@@ -49,14 +61,16 @@ public class Character_Activity extends Activity {
         this.player = (Player) getIntent().getSerializableExtra("player");
         this.game = new GameInitialize(player.getCurrentArmorsArray(), player.getCurrentWeaponsArray());
 
+        this.playerIcon = (ImageView) findViewById(R.id.playerShopIcon);
+
         this.armArray = game.getArmor();
         this.wepArray = game.getWeapon();
 
-        this.playerIcon = (ImageView) findViewById(R.id.playerShopIcon);
         int resId = getResources().getIdentifier(player.getPlayerIcon(), "drawable", getPackageName());
         if (resId != 0)
             playerIcon.setImageResource(resId);
 
+        this.playerStat = (TextView) findViewById(R.id.playerStat);
 
         updateStockItemsInUseByPlayer();
 
@@ -64,6 +78,67 @@ public class Character_Activity extends Activity {
         setShopIcons();
 
         MyApplication.ttobj.speak("Welcome " + player.getName() + ". Pick items wisely. Your enemy will show no mercy!", TextToSpeech.QUEUE_FLUSH, null);
+
+        final ImageButton character_mute = (ImageButton) findViewById(R.id.character_mute);
+        character_mute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.muteClicked(character_mute);
+            }
+        });
+
+        playerStat.setText(player.getStats());
+        checkIfWearingItems();
+    }
+
+    public void startBattle(View v)
+    {
+        Intent battleIntent = new Intent(this,Battle_Activity.class);
+        battleIntent.putExtra("player",player);
+        MyApplication.ttobj.stop();
+        startActivity(battleIntent);
+    }
+
+    private void checkIfWearingItems()
+    {
+        for(int i=0;i<=4;i++)
+        {
+            Item item = player.getItem(Type.getType(i));
+            if(item != null)
+            {
+                if(item.getItemType() != Type.WEAPON)
+                {
+                    for(int j=0;j<12;j++)
+                    {
+                        if(armArray[j].getName().compareTo(item.getName()) == 0)
+                        {
+                            player.setItemNull(item.getItemType());
+                            player.setItem(armArray[j]);
+                            player.getItem(Type.getType(i)).inUse = false;
+                            String s = player.getItem(Type.getType(i)).getBigIcon();
+                            changeLabelBigIcon(player.getItem(Type.getType(i)));
+                            player.getItem(Type.getType(i)).inUse = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for(int j=0;j<8;j++)
+                    {
+                        if(wepArray[j].getName().compareTo(item.getName()) == 0)
+                        {
+                            player.setItemNull(item.getItemType());
+                            player.setItem(wepArray[j]);
+                            player.getItem(Type.getType(i)).inUse = false;
+                            changeLabelBigIcon(player.getItem(Type.getType(i)));
+                            player.getItem(Type.getType(i)).inUse = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
@@ -112,6 +187,39 @@ public class Character_Activity extends Activity {
         }
     }
 
+    public void logout(View v)
+    {
+        new SaveAsync().execute();
+    }
+
+    public class SaveAsync extends AsyncTask<Void,String,Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                Socket gameServer = new Socket("dizel-services.ddns.net", 55555);
+                ObjectOutputStream gameServerOutput = new ObjectOutputStream(gameServer.getOutputStream());
+                ObjectInputStream gameServerInput = new ObjectInputStream(gameServer.getInputStream());
+                String message = "Save Progress";
+                gameServerOutput.writeObject(message);
+                gameServerOutput.writeObject(player);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            finish();
+            Intent mainMenu = new Intent(Character_Activity.this,Main_Activity.class);
+            startActivity(mainMenu);
+            super.onPostExecute(aVoid);
+        }
+    }
+
     private void findAllImageButtons()
     {
         for(int i=0;i<12;i++)
@@ -139,6 +247,7 @@ public class Character_Activity extends Activity {
     {
         for(int i=0;i<12;i++) {
             int resId = getResources().getIdentifier(armArray[i].getSmallIcon(), "drawable", getPackageName());
+            String s = armArray[i].getSmallIcon();
             if (resId != 0)
                 armorLabelsArray[i].setImageResource(resId);
         }
@@ -169,12 +278,19 @@ public class Character_Activity extends Activity {
                 changeLabelBigIcon(item);
                 player.setItem(item);
                 changeLabelSmallIcon(button, item);
+                playerStat.setText(player.getStats());
 
             }
 
         }
         else
             System.out.println("already wearing this type");
+    }
+
+    @Override
+    protected void onResume() {
+        setShopIcons();
+        super.onResume();
     }
 
     public void changeLabelBigIcon(Item item)
@@ -238,6 +354,7 @@ public class Character_Activity extends Activity {
             player.setItemNull(t);
             button.setImageResource(R.drawable.default_big_image);
             setShopIcons();
+            playerStat.setText(player.getStats());
         }
     }
 }

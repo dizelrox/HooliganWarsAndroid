@@ -2,37 +2,62 @@ package com.example.dizelrox.hooliganwarsandroid.GUI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.example.dizelrox.hooliganwarsandroid.Logic.BackgroundSoundService;
+import com.example.dizelrox.hooliganwarsandroid.Logic.MyApplication;
 import com.example.dizelrox.hooliganwarsandroid.Logic.SoundService;
 import com.example.dizelrox.hooliganwarsandroid.R;
 import com.example.dizelrox.hooliganwarsandroid.Logic.RequestAndResult_Codes;
 
 
 public class Main_Activity extends Activity {
-
-    public static Intent svc;
+    RelativeLayout topLevelLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-        svc = new Intent(this, SoundService.class);
-        svc.putExtra("isLooping",true);
-        svc.putExtra("trackName","background1");
-        //startService(svc);
+        setContentView(R.layout.help_overlay);
+        topLevelLayout = (RelativeLayout) findViewById(R.id.mainHelpLayout);
+
+        if (isFirstTime()) {
+            topLevelLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
 
 
+    private boolean isFirstTime()
+    {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("RanBefore", false);
+        if (!ranBefore) {
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("RanBefore", true);
+            editor.commit();
+            topLevelLayout.setVisibility(View.VISIBLE);
+            topLevelLayout.setOnTouchListener(new View.OnTouchListener(){
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    topLevelLayout.setVisibility(View.INVISIBLE);
+                    return false;
+                }
+
+            });
 
 
+        }
+        return ranBefore;
 
-
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,6 +93,5 @@ public class Main_Activity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(svc);
     }
 }

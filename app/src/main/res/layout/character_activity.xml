@@ -3,7 +3,7 @@
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frameLayout"
-    android:background="@drawable/background_no_header">
+    android:background="@drawable/background_test_1">
 
     <LinearLayout
         android:orientation="vertical"
@@ -85,15 +85,18 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/playerShopIcon"
-                    android:src="@drawable/warrior_shop_6" />
+                    android:id="@+id/playerShopIcon" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New Button"
-                    android:onClick="speakButton"
-                    android:id="@+id/button" />
+                    android:text="@string/startBattleText"
+                    android:id="@+id/toBattleButton"
+                    android:textColor="#ff000000"
+                    android:textSize="35dp"
+                    android:textStyle="bold"
+                    android:onClick="startBattle" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -115,13 +118,21 @@
                     android:layout_marginTop="10dp"
                     android:scaleType="fitCenter" />
 
-                <TextView
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="New Text"
-                    android:id="@+id/textView"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.92" />
+                    android:layout_height="0dp"
+                    android:layout_weight="0.92"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/playerStat"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:textColor="#ffffffff" />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
@@ -339,4 +350,31 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/logoutText"
+            android:id="@+id/button"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textColor="#ff000000"
+            android:onClick="logout" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/character_mute"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/sound_volume"
+            android:longClickable="false"
+            android:background="@android:color/transparent" />
+
+    </RelativeLayout>
+
 </FrameLayout>

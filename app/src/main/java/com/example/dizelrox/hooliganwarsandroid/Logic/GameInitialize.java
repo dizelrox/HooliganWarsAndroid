@@ -6,6 +6,9 @@ package com.example.dizelrox.hooliganwarsandroid.Logic;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+import java.io.Serializable;
+
 /**
  * Class used to create all game objects necessary for the gameplay.
  * In this class both player and bot are created,all ingame armors and weapons.

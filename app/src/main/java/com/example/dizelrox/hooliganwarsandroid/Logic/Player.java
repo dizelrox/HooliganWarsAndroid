@@ -113,6 +113,28 @@ public class Player implements Serializable
         }
     }
 
+    public String getStats()
+    {
+        String output = String.format("%s\n\nDEFENCE:\n", this.getName());
+
+        Iterator<Item> iterator = items.iterator();
+        while (iterator.hasNext())
+        {
+            Item singleItem = iterator.next();
+            if (((Object) singleItem).getClass().equals(Armor.class))
+            {
+                output += String.format("%s: %d%%\n", singleItem.getItemType().toString(), (int) (((Armor) singleItem).getDefenceValue() * 100));
+            } else
+            {
+                output += String.format("\nATTACK: ");
+                output += String.format("%d\n", ((Weapon) singleItem).getDamageValue() + getStrengthFactor());
+            }
+
+        }
+        return output;
+
+    }
+
 
     public String getCurrentTimeStamp()
     {

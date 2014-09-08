@@ -19,5 +19,20 @@
     <string name="title_activity_login_">Login_Activity</string>
     <string name="title_activity_character_">Character_Activity</string>
     <string name="title_activity_battle_">Battle_Activity</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="loadingText">Loading...</string>
+    <string name="rememberMeText">Remember me</string>
+    <string name="yesText">Yes</string>
+    <string name="noText">No</string>
+    <string name="startBattleText">Start Battle</string>
+    <string name="logoutText">Log out</string>
+    <string name="gameSettingsText">Settings</string>
+    <string name="defenseArea">Defense Area</string>
+    <string name="headText">Head</string>
+    <string name="chestText">Chest</string>
+    <string name="stomachText">Stomach</string>
+    <string name="legsText">Legs</string>
+    <string name="attackAreaText">Attack Area</string>
+    <string name="attackButtonText">Attack!</string>
 
 </resources>

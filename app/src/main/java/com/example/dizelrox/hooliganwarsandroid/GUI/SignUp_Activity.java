@@ -1,40 +1,29 @@
 package com.example.dizelrox.hooliganwarsandroid.GUI;
 
 import android.app.Activity;
-import android.app.IntentService;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dizelrox.hooliganwarsandroid.Logic.MyApplication;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Player;
 import com.example.dizelrox.hooliganwarsandroid.R;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.sql.SQLException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 
 public class SignUp_Activity extends Activity {
@@ -56,8 +45,16 @@ public class SignUp_Activity extends Activity {
         loginInput = (EditText) findViewById(R.id.loginInput);
         passwordInput = (EditText) findViewById(R.id.passwordInput);
         signUpButton = (Button) findViewById(R.id.signUpButton);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressText = (TextView) findViewById(R.id.progressText);
+        progressBar = (ProgressBar) findViewById(R.id.signUpProgressBar);
+        progressText = (TextView) findViewById(R.id.opponentNameText);
+
+        final ImageButton signUp_mute = (ImageButton) findViewById(R.id.signUp_mute);
+        signUp_mute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.muteClicked(signUp_mute);
+            }
+        });
     }
 
 
@@ -132,37 +129,35 @@ public class SignUp_Activity extends Activity {
         protected Player doInBackground(Object... params) {
 
 
-
-            try {
-
                 player = (Player) params[0];
                 String login = (String) params[1];
                 String password = (String) params[2];
-
-                publishProgress("Creating player....");
+            try {
+                publishProgress("Connecting to server");
                 Thread.sleep(1000);
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                String json = gson.toJson(player);
-
-                String link = ("http://dizel-services.ddns.net:8080/HW_Servlet/AddUserToDB?" +
-                        "jsonObject="+ URLEncoder.encode(json, "UTF-8")+
-                        "&login="+URLEncoder.encode(login,"UTF-8")+
-                        "&password="+URLEncoder.encode(password,"UTF-8"));
-
-                publishProgress("Connecting to database...");
+                Socket clientSocket = new Socket("192.168.0.101", 55555);
+                publishProgress("Connected!");
                 Thread.sleep(1000);
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(link);
-
-                HttpResponse httpResponse = httpClient.execute(httpGet);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                output = EntityUtils.toString(httpEntity);
-
-                publishProgress("Sending player...");
+                ObjectOutputStream clientOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+                String command = "Let me add a player!";
+                clientOutput.writeObject(command);
+                clientOutput.writeObject(player);
+                publishProgress("Adding new player to database");
                 Thread.sleep(1000);
-                System.out.println(output);
+                clientOutput.writeObject(login);
+                clientOutput.writeObject(password);
+                ObjectInputStream clientInput = new ObjectInputStream(clientSocket.getInputStream());
+                output = (String) clientInput.readObject();
+                publishProgress("Done!");
+                Thread.sleep(1000);
 
+            } catch (StreamCorruptedException e) {
+                e.printStackTrace();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -177,7 +172,7 @@ public class SignUp_Activity extends Activity {
             signUpButton.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 
-            if (output.compareTo("Failed to add player\r\n") == 0) {
+            if (output.compareTo("Failed to add player") == 0) {
                 Toast.makeText(getApplicationContext(), "Failed to add player",
                         Toast.LENGTH_SHORT).show();
             }

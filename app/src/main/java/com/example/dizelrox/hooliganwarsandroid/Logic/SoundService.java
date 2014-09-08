@@ -11,7 +11,7 @@ import com.example.dizelrox.hooliganwarsandroid.R;
  */
 public class SoundService extends IntentService {
 
-    MediaPlayer player;
+    public static MediaPlayer player;
 
 
     /**
@@ -35,7 +35,7 @@ public class SoundService extends IntentService {
         String trackName = intent.getStringExtra("trackName");
         int resId = getResources().getIdentifier(trackName, "raw", getPackageName());
         player = MediaPlayer.create(this,resId);
-        player.setLooping(true); // Set looping
+        player.setLooping(isLooping); // Set looping
         player.setVolume(100,100);
         player.start();
     }
@@ -44,5 +44,7 @@ public class SoundService extends IntentService {
     public void onDestroy() {
         player.stop();
         player.release();
+
+        System.out.println("sound stopped");
     }
 }

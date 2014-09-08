@@ -108,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/progressText"
+        android:id="@+id/opponentNameText"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/tableLayout"
         android:layout_centerHorizontal="true"
@@ -120,17 +120,30 @@
         android:layout_height="wrap_content"
         android:text="@string/signUpText"
         android:id="@+id/signUpButton"
-        android:layout_below="@+id/progressText"
+        android:layout_below="@+id/opponentNameText"
         android:onClick="signUp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp" />
+        android:layout_marginTop="45dp"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_below="@+id/progressText"
+        android:id="@+id/signUpProgressBar"
+        android:layout_below="@+id/opponentNameText"
         android:layout_centerHorizontal="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:focusableInTouchMode="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/signUp_mute"
+        android:src="@drawable/sound_volume"
+        android:longClickable="false"
+        android:background="@android:color/transparent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

@@ -1,0 +1,32 @@
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/splash">
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:id="@+id/splashProgressBar"
+        android:layout_marginBottom="262dp"
+        android:progressDrawable="@drawable/ladingprogressbar"
+        android:progress="0"
+        android:max="100"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:focusableInTouchMode="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/opponentNameText"
+        android:layout_alignTop="@+id/splashProgressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:gravity="center_horizontal" />
+
+</RelativeLayout>
