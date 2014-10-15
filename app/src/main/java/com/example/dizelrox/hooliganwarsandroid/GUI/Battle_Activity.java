@@ -211,7 +211,7 @@ public class Battle_Activity extends Activity {
                         .show();
             }
 
-            nullPlayerAndGuiFields();
+            nullPlayerAndGuiFields(false);
             defineAttackButtonAvailability();
             super.onPostExecute(aVoid);
         }
@@ -277,7 +277,7 @@ public class Battle_Activity extends Activity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
-            nullPlayerAndGuiFields();
+            nullPlayerAndGuiFields(true);
             defineAttackButtonAvailability();
             new WaitForHitAsync().execute();
             super.onPostExecute(aVoid);
@@ -307,12 +307,17 @@ public class Battle_Activity extends Activity {
         }
     }
 
-    private void nullPlayerAndGuiFields()
+    private void nullPlayerAndGuiFields(boolean attack)
     {
-        player.setAttackArea(null);
-        player.setDefenceArea(null);
-        defenseRadios.clearCheck();
-        attackRadios.clearCheck();
+        if(attack) {
+            player.setAttackArea(null);
+            attackRadios.clearCheck();
+        }
+        else {
+            player.setDefenceArea(null);
+            defenseRadios.clearCheck();
+        }
+
     }
 
     private void initializeOpponentIcons()
