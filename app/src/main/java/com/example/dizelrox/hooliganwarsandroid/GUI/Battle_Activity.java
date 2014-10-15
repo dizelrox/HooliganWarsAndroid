@@ -230,7 +230,7 @@ public class Battle_Activity extends Activity {
     public void attackButtonPressed(View v)
    {
        attackButton.setEnabled(false);
-       switchRadios();
+       //switchRadios();
        turn = !turn;
        new AttackAsycn().execute();
    }
