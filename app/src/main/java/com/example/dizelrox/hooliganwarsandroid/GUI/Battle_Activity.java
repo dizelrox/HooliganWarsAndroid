@@ -309,7 +309,7 @@ public class Battle_Activity extends Activity {
 
     private void nullPlayerAndGuiFields(boolean attack)
     {
-        if(attack) {
+        if(!attack) {
             player.setAttackArea(null);
             attackRadios.clearCheck();
         }
