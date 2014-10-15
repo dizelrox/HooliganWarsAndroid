@@ -2,18 +2,14 @@ package com.example.dizelrox.hooliganwarsandroid.GUI;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.dizelrox.hooliganwarsandroid.Logic.Armor;
@@ -21,7 +17,6 @@ import com.example.dizelrox.hooliganwarsandroid.Logic.GameInitialize;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Item;
 import com.example.dizelrox.hooliganwarsandroid.Logic.MyApplication;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Player;
-import com.example.dizelrox.hooliganwarsandroid.Logic.SoundService;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Type;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Weapon;
 import com.example.dizelrox.hooliganwarsandroid.R;
@@ -30,7 +25,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Locale;
 
 public class Character_Activity extends Activity {
 
@@ -76,7 +70,7 @@ public class Character_Activity extends Activity {
 
         findAllImageButtons();
         setShopIcons();
-
+        if(MyApplication.ttobj != null)
         MyApplication.ttobj.speak("Welcome " + player.getName() + ". Pick items wisely. Your enemy will show no mercy!", TextToSpeech.QUEUE_FLUSH, null);
 
         final ImageButton character_mute = (ImageButton) findViewById(R.id.character_mute);

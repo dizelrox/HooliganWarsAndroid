@@ -3,6 +3,7 @@ package com.example.dizelrox.hooliganwarsandroid.GUI;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -11,14 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.example.dizelrox.hooliganwarsandroid.Logic.GameInitialize;
 import com.example.dizelrox.hooliganwarsandroid.Logic.MyApplication;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Player;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Type;
@@ -28,12 +27,7 @@ import com.example.dizelrox.hooliganwarsandroid.R;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Battle_Activity extends Activity {
 
@@ -194,6 +188,12 @@ public class Battle_Activity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             opponent.throwHit((Weapon) opponent.getItem(Type.WEAPON), opponent.getStrengthFactor(), opponent.getAttackArea(), player);
+
+            String number = Integer.toString((int) (Math.random() * 7 + 1));
+            int resId = getResources().getIdentifier("hit"+number, "raw", getPackageName());
+            MyApplication.player = MediaPlayer.create(Battle_Activity.this, resId);
+            MyApplication.player.setVolume(100,100);
+            MyApplication.player.start();
             turn = !turn;
             consoleText.append("[" + player.getCurrentTimeStamp() + "]" + "You have" + player.getConsoleText());
             updateHealthBar("player", player.getHealth());
@@ -211,13 +211,23 @@ public class Battle_Activity extends Activity {
                         .show();
             }
 
-            nullPlayerAndGuiFields();
+            nullPlayerAndGuiFields(false);
             defineAttackButtonAvailability();
             super.onPostExecute(aVoid);
         }
     }
 
-   public void attackButtonPressed(View v)
+    @Override
+    protected void onDestroy() {
+        try {
+            gameServer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }
+
+    public void attackButtonPressed(View v)
    {
        attackButton.setEnabled(false);
        switchRadios();
@@ -246,6 +256,11 @@ public class Battle_Activity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             player.throwHit((Weapon) player.getItem(Type.WEAPON), player.getStrengthFactor(), player.getAttackArea(), opponent);
+            String number = Integer.toString((int) (Math.random() * 7 + 1));
+            int resId = getResources().getIdentifier("hit"+number, "raw", getPackageName());
+            MyApplication.player = MediaPlayer.create(Battle_Activity.this, resId);
+            MyApplication.player.setVolume(100,100);
+            MyApplication.player.start();
             consoleText.append("[" + player.getCurrentTimeStamp() + "]" + opponent.getName() + " has" + opponent.getConsoleText());
             updateHealthBar("bot",opponent.getHealth());
             switchRadios();
@@ -262,7 +277,7 @@ public class Battle_Activity extends Activity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
-            nullPlayerAndGuiFields();
+            nullPlayerAndGuiFields(true);
             defineAttackButtonAvailability();
             new WaitForHitAsync().execute();
             super.onPostExecute(aVoid);
@@ -292,12 +307,17 @@ public class Battle_Activity extends Activity {
         }
     }
 
-    private void nullPlayerAndGuiFields()
+    private void nullPlayerAndGuiFields(boolean attack)
     {
-        player.setAttackArea(null);
-        player.setDefenceArea(null);
-        defenseRadios.clearCheck();
-        attackRadios.clearCheck();
+        if(attack) {
+            player.setAttackArea(null);
+            attackRadios.clearCheck();
+        }
+        else {
+            player.setDefenceArea(null);
+            defenseRadios.clearCheck();
+        }
+
     }
 
     private void initializeOpponentIcons()

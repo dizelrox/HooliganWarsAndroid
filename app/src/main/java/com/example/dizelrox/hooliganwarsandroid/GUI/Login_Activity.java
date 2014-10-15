@@ -19,20 +19,11 @@ import android.widget.ToggleButton;
 import com.example.dizelrox.hooliganwarsandroid.Logic.MyApplication;
 import com.example.dizelrox.hooliganwarsandroid.Logic.Player;
 import com.example.dizelrox.hooliganwarsandroid.R;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 
 public class Login_Activity extends Activity {

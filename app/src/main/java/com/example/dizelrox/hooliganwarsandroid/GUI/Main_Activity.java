@@ -10,11 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.example.dizelrox.hooliganwarsandroid.Logic.BackgroundSoundService;
-import com.example.dizelrox.hooliganwarsandroid.Logic.MyApplication;
-import com.example.dizelrox.hooliganwarsandroid.Logic.SoundService;
-import com.example.dizelrox.hooliganwarsandroid.R;
 import com.example.dizelrox.hooliganwarsandroid.Logic.RequestAndResult_Codes;
+import com.example.dizelrox.hooliganwarsandroid.R;
 
 
 public class Main_Activity extends Activity {
