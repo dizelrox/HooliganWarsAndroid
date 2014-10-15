@@ -298,7 +298,7 @@ public class Battle_Activity extends Activity {
 
     private void defineAttackButtonAvailability()
     {
-        if (player.getAttackArea() != null && player.getDefenceArea() != null && turn)
+        if (player.getAttackArea() != null && turn)
         {
             attackButton.setEnabled(true);
         } else
