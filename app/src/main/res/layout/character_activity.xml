@@ -378,4 +378,13 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:background="@drawable/help_character"
+        android:id="@+id/char_help_layout">
+
+    </RelativeLayout>
+
 </FrameLayout>

@@ -3,22 +3,19 @@ package com.example.dizelrox.hooliganwarsandroid.Logic;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeSet;
 
 
-
-public class Player implements Serializable
-{
+public class Player implements Serializable {
 
     private String loginToDatabase;
     private String shopIcon;
     private String battleIcon;
     private int strengthFactor;
     private double defenceFactor;
-    private TreeSet<Item> items = new TreeSet<Item>();
+    private TreeSet<Item> items = new TreeSet<>();
     private String name;
     private int health;
     private Type defenceArea;
@@ -30,90 +27,79 @@ public class Player implements Serializable
     public Player(String name) //Player constructor
     {
         int randomIcon = (int) (Math.random() * 8 + 1);
-        shopIcon = "warrior_shop_"+randomIcon;
-        battleIcon = "warrior_battle_"+randomIcon;
+        shopIcon = "warrior_shop_" + randomIcon;
+        battleIcon = "warrior_battle_" + randomIcon;
         int rndStrength = (int) (Math.random() * 3 + 1); //Generate strength factor
         setStrengthFactor(rndStrength);
-        double rndDefence = (double) (Math.random() * 0.3); //Generate defence factor
+        double rndDefence = (Math.random() * 0.3); //Generate defence factor
         setDefenceFactor(rndDefence);
         setName(name);
         setHealth(100);
         currentArmors = new boolean[]
-        {
-            true,
-            false,
-            false,
-            true,
-            false,
-            false,
-            true,
-            false,
-            false,
-            true,
-            false,
-            false,
+                {
+                        true,
+                        false,
+                        false,
+                        true,
+                        false,
+                        false,
+                        true,
+                        false,
+                        false,
+                        true,
+                        false,
+                        false,
 
-        };
+                };
         currentWeapons = new boolean[]
-        {
-            true,
-            true,
-            true,
-            false,
-            false,
-            true,
-            false,
-            false
-        };
+                {
+                        true,
+                        true,
+                        true,
+                        false,
+                        false,
+                        true,
+                        false,
+                        false
+                };
     }
 
-    public void setLoginToDatabase(String login)
-    {
+    public void setLoginToDatabase(String login) {
         this.loginToDatabase = login;
     }
 
-    public String getLoginToDatabase()
-    {
+    public String getLoginToDatabase() {
         return loginToDatabase;
     }
 
-    public boolean[] getCurrentWeaponsArray()
-    {
+    public boolean[] getCurrentWeaponsArray() {
         return this.currentWeapons;
     }
 
-    public boolean[] getCurrentArmorsArray()
-    {
+    public boolean[] getCurrentArmorsArray() {
         return this.currentArmors;
     }
 
-    public void updatePlayerItemsByCurrentGame(Armor[] armArray, Weapon[] wepArray)
-    {
+    public void updatePlayerItemsByCurrentGame(Armor[] armArray, Weapon[] wepArray) {
         int i = 0;
-        for (Armor armorSingleItem : armArray)
-        {
+        for (Armor armorSingleItem : armArray) {
             currentArmors[i++] = armorSingleItem.isAvalible();
         }
         i = 0;
-        for (Weapon weaponSingleItem : wepArray)
-        {
+        for (Weapon weaponSingleItem : wepArray) {
             currentWeapons[i++] = weaponSingleItem.isAvalible();
         }
     }
 
-    public String getStats()
-    {
+    public String getStats() {
         String output = String.format("%s\n\nDEFENCE:\n", this.getName());
 
         Iterator<Item> iterator = items.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Item singleItem = iterator.next();
-            if (((Object) singleItem).getClass().equals(Armor.class))
-            {
+            if (((Object) singleItem).getClass().equals(Armor.class)) {
                 output += String.format("%s: %d%%\n", singleItem.getItemType().toString(), (int) (((Armor) singleItem).getDefenceValue() * 100));
-            } else
-            {
+            } else {
                 output += String.format("\nATTACK: ");
                 output += String.format("%d\n", ((Weapon) singleItem).getDamageValue() + getStrengthFactor());
             }
@@ -124,13 +110,11 @@ public class Player implements Serializable
     }
 
 
-    public String getCurrentTimeStamp()
-    {
+    public String getCurrentTimeStamp() {
         return new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
 
-    public String getConsoleText()
-    {
+    public String getConsoleText() {
         return consoleText;
     }
 
@@ -141,8 +125,7 @@ public class Player implements Serializable
      * @return {@linkplain Type} object containing information about specific
      * body part.
      */
-    public Type getRandomAttackArea()
-    {
+    public Type getRandomAttackArea() {
 
         Type type = Type.getType((short) (Math.random() * 4));
         return type;
@@ -152,20 +135,19 @@ public class Player implements Serializable
      * Method used to get an {@linkplain Item} from specific body part.
      *
      * @param area receives {@linkplain Type} defining the body part we looking
-     * for items on.
+     *             for items on.
      * @return {@linkplain Item} that is currently on the desired body part if
      * any.
      */
-    public Item getItem(Type area)
-    {
+    public Item getItem(Type area) {
         Iterator<Item> iterator = items.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Item singleItem = iterator.next();
-            if(singleItem.getItemType() == area)             
+            if (singleItem.getItemType() == area)
                 return singleItem;
         }
 
-        return null;    
+        return null;
     }
 
     /**
@@ -173,8 +155,7 @@ public class Player implements Serializable
      *
      * @param item receives an {@linkplain Item} to wear.
      */
-    public void setItem(Item item)
-    {
+    public void setItem(Item item) {
         item.inUse = true;
         items.add(item);
     }
@@ -183,16 +164,13 @@ public class Player implements Serializable
      * Method used to take item off.
      *
      * @param itemType receives a {@linkplain Type} which defines body part
-     * where we want to take the item off.
+     *                 where we want to take the item off.
      */
-    public void setItemNull(Type itemType)
-    {
+    public void setItemNull(Type itemType) {
         Iterator<Item> iterator = items.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Item singleItem = iterator.next();
-            if (singleItem.getItemType() == itemType)
-            {
+            if (singleItem.getItemType() == itemType) {
                 iterator.remove();
             }
         }
@@ -203,8 +181,7 @@ public class Player implements Serializable
      *
      * @return double value representing the defense factor.
      */
-    public double getDefenceFactor()
-    {
+    public double getDefenceFactor() {
         return defenceFactor;
     }
 
@@ -213,8 +190,7 @@ public class Player implements Serializable
      *
      * @param val receives double value to be set as defense factor.
      */
-    public void setDefenceFactor(double val)
-    {
+    public void setDefenceFactor(double val) {
         this.defenceFactor = val;
     }
 
@@ -223,8 +199,7 @@ public class Player implements Serializable
      *
      * @return integer value representing current health of a player.
      */
-    public int getHealth()
-    {
+    public int getHealth() {
         return health;
     }
 
@@ -233,8 +208,7 @@ public class Player implements Serializable
      *
      * @param val receives integer value.
      */
-    public void setHealth(int val)
-    {
+    public void setHealth(int val) {
         this.health = val;
     }
 
@@ -243,8 +217,7 @@ public class Player implements Serializable
      *
      * @return String variable containing player's name.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -253,8 +226,7 @@ public class Player implements Serializable
      *
      * @param val receives String variable to be set as player's name.
      */
-    public void setName(String val)
-    {
+    public void setName(String val) {
         this.name = val;
     }
 
@@ -263,8 +235,7 @@ public class Player implements Serializable
      *
      * @return integer value representing player's strength factor.
      */
-    public int getStrengthFactor()
-    {
+    public int getStrengthFactor() {
         return strengthFactor;
     }
 
@@ -273,8 +244,7 @@ public class Player implements Serializable
      *
      * @param val receives integer value.
      */
-    public void setStrengthFactor(int val)
-    {
+    public void setStrengthFactor(int val) {
         this.strengthFactor = val;
     }
 
@@ -283,17 +253,16 @@ public class Player implements Serializable
      *
      * @return String variable.
      */
-    public String toString()
-    {
+    public String toString() {
         return String.format("player name is %s\nplayer strength factor is %d\nplayer def factor is %.1f\n"
-                + "player helmet is %s\n"
-                + "player armor is %s\n"
-                + "player belt is %s\n"
-                + "player legs is %s\n"
-                + "player weapon is %s\n"
-                + "player health is %d\n", getName(), getStrengthFactor(), getDefenceFactor(),
-                getItem(Type.HEAD), 
-                getItem(Type.CHEST), 
+                        + "player helmet is %s\n"
+                        + "player armor is %s\n"
+                        + "player belt is %s\n"
+                        + "player legs is %s\n"
+                        + "player weapon is %s\n"
+                        + "player health is %d\n", getName(), getStrengthFactor(), getDefenceFactor(),
+                getItem(Type.HEAD),
+                getItem(Type.CHEST),
                 getItem(Type.STOMACH),
                 getItem(Type.LEGS),
                 getItem(Type.WEAPON),
@@ -303,17 +272,16 @@ public class Player implements Serializable
     /**
      * Method used to throw hit on your opponent.
      *
-     * @param weapon receives instance of class {@linkplain Weapon} defining
-     * with which weapon to perform the hit.
-     * @param strFactor receives player's strength factor as part of the damage
-     * calculation.
+     * @param weapon     receives instance of class {@linkplain Weapon} defining
+     *                   with which weapon to perform the hit.
+     * @param strFactor  receives player's strength factor as part of the damage
+     *                   calculation.
      * @param attackArea receives {@linkplain Type} with defines desired attack
-     * area.
-     * @param target receives instance of class {@linkplain com.example.dizelrox.hooliganwarsandroid.Logic.Player} which is the
-     * target of the attack.
+     *                   area.
+     * @param target     receives instance of class {@linkplain com.example.dizelrox.hooliganwarsandroid.Logic.Player} which is the
+     *                   target of the attack.
      */
-    public void throwHit(Weapon weapon, int strFactor, Type attackArea, Player target)
-    {
+    public void throwHit(Weapon weapon, int strFactor, Type attackArea, Player target) {
         int damage = (weapon != null) ? weapon.getDamageValue() + strFactor : strFactor;
         System.err.printf("Thrown Damage: %d\n", damage);
         target.getHit(damage, attackArea, weapon);
@@ -323,84 +291,71 @@ public class Player implements Serializable
     /**
      * Method called automatically when player is getting a hit.
      *
-     * @param damage receives integer value representing the damage calculated
-     * by opponent's weapon and strength factor.
+     * @param damage     receives integer value representing the damage calculated
+     *                   by opponent's weapon and strength factor.
      * @param attackArea receives {@linkplain Type} which is the area where you
-     * are getting hit.
-     * @param weapon receives instance of {@linkplain Weapon} which is the
-     * weapon you are being hit with.
+     *                   are getting hit.
+     * @param weapon     receives instance of {@linkplain Weapon} which is the
+     *                   weapon you are being hit with.
      */
-    public void getHit(int damage, Type attackArea, Weapon weapon)
-    {
+    public void getHit(int damage, Type attackArea, Weapon weapon) {
         double rawDamage; // damage thrown by the attacker
         rawDamage = damage - damage * getDefenceFactor(); //subtract the defence factor (random for each match) from the damage received
         System.err.printf("Got Damage: %.1f\n", rawDamage);
 
-        if (getItem(attackArea) != null)
-        {
+        if (getItem(attackArea) != null) {
             rawDamage -= rawDamage * ((Armor) getItem(attackArea)).getDefenceValue();
         }
 
         if (attackArea == getDefenceArea()) //is area attacked the same as defended?
         {
-            if ((int) rawDamage / 2 > getHealth())
-            {
+            if ((int) rawDamage / 2 > getHealth()) {
                 health = 0;
-            } else
-            {
+            } else {
                 health -= (int) rawDamage / 2;
             }
 
             consoleText = String.format(" been hit with %s in the %s and successfully blocked the attack. Got %d points of damage!\n",
-                   ((weapon != null) ? weapon.getName() : "bare hands"), attackArea.toString(), (int) (rawDamage / 2));
+                    ((weapon != null) ? weapon.getName() : "bare hands"), attackArea.toString(), (int) (rawDamage / 2));
 
-        } else
-        {
-            if ((int) rawDamage > getHealth())
-            {
+        } else {
+            if ((int) rawDamage > getHealth()) {
                 health = 0;
-            } else
-            {
+            } else {
                 health -= (int) rawDamage;
             }
 
             consoleText = String.format(" been hit with %s in the %s and couldn't properly block it. Got %d points of damage!\n",
-                  ((weapon != null) ? weapon.getName() : "bare hands"), attackArea.toString(), (int) rawDamage);
+                    ((weapon != null) ? weapon.getName() : "bare hands"), attackArea.toString(), (int) rawDamage);
         }
     }
 
 
-    public String getPlayerIcon()
-    {
+    public String getPlayerIcon() {
         return shopIcon;
     }
 
-    public String getBattleIcon()
-    {
+    public String getBattleIcon() {
         return battleIcon;
     }
 
 
-    public Type getAttackArea()
-    {
+    public Type getAttackArea() {
         return this.attackArea;
     }
 
 
-    public void setAttackArea(Type area)
-    {
+    public void setAttackArea(Type area) {
         attackArea = area;
     }
 
 
-    public Type getDefenceArea()
-    {
+    public Type getDefenceArea() {
         return defenceArea;
     }
 
 
-    public void setDefenceArea(Type area)
-    {
+    public void setDefenceArea(Type area) {
         defenceArea = area;
     }
 

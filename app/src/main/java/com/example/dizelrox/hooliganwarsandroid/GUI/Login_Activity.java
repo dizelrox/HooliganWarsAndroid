@@ -85,6 +85,9 @@ public class Login_Activity extends Activity {
         loginProgressBar.setVisibility(View.VISIBLE);
     }
 
+    public void muteClicked(View view) {
+    }
+
     public class LoginAsync extends AsyncTask <String,String,Player>
     {
         Player player;

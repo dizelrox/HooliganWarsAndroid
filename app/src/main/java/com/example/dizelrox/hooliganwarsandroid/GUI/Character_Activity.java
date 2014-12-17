@@ -2,14 +2,17 @@ package com.example.dizelrox.hooliganwarsandroid.GUI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.dizelrox.hooliganwarsandroid.Logic.Armor;
@@ -36,6 +39,8 @@ public class Character_Activity extends Activity {
 
     ImageButton weaponLabelsArray[] = new ImageButton[8];
 
+    RelativeLayout character_help;
+
     ImageButton headImage;
     ImageButton chestImage;
     ImageButton stomachImage;
@@ -60,6 +65,16 @@ public class Character_Activity extends Activity {
         this.armArray = game.getArmor();
         this.wepArray = game.getWeapon();
 
+        character_help = (RelativeLayout) findViewById(R.id.char_help_layout);
+
+        if (isFirstTime()) {
+            character_help.setVisibility(View.INVISIBLE);
+        }
+
+
+
+
+
         int resId = getResources().getIdentifier(player.getPlayerIcon(), "drawable", getPackageName());
         if (resId != 0)
             playerIcon.setImageResource(resId);
@@ -83,6 +98,32 @@ public class Character_Activity extends Activity {
 
         playerStat.setText(player.getStats());
         checkIfWearingItems();
+    }
+
+    private boolean isFirstTime()
+    {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("RanBefore", false);
+        if (!ranBefore) {
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("RanBefore", true);
+            editor.commit();
+            character_help.setVisibility(View.VISIBLE);
+            character_help.setOnTouchListener(new View.OnTouchListener(){
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    character_help.setVisibility(View.INVISIBLE);
+                    return false;
+                }
+
+            });
+
+
+        }
+        return ranBefore;
+
     }
 
     public void startBattle(View v)
