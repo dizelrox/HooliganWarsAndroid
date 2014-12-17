@@ -135,7 +135,7 @@ public class SignUp_Activity extends Activity {
             try {
                 publishProgress("Connecting to server");
                 Thread.sleep(1000);
-                Socket clientSocket = new Socket("192.168.0.101", 55555);
+                Socket clientSocket = new Socket("dizel-services.ddns.net", 55555);
                 publishProgress("Connected!");
                 Thread.sleep(1000);
                 ObjectOutputStream clientOutput = new ObjectOutputStream(clientSocket.getOutputStream());

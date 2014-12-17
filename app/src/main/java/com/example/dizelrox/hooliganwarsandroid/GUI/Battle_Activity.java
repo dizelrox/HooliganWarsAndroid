@@ -44,6 +44,7 @@ public class Battle_Activity extends Activity {
     ImageView playerIcon;
     ProgressBar playerHealthBar;
     TextView playerNameTextView;
+    TextView playerHealth;
 
 
     ImageView opponentBattleHelmet;
@@ -54,6 +55,7 @@ public class Battle_Activity extends Activity {
     ImageView opponentIcon;
     ProgressBar opponentHealthBar;
     TextView opponentNameTextView;
+    TextView botHealth;
 
     Button attackButton;
     RadioGroup attackRadios;
@@ -85,6 +87,7 @@ public class Battle_Activity extends Activity {
         this.playerBattleWeapon =   (ImageView) findViewById(R.id.playerBattleWeapon);
         this.playerHealthBar =      (ProgressBar) findViewById(R.id.playerHealthBar);
         this.playerNameTextView =   (TextView) findViewById(R.id.playerNameText);
+        this.playerHealth =         (TextView) findViewById(R.id.playerHealth);
 
         this.opponentIcon =         (ImageView) findViewById(R.id.opponentBattleIcon);
         this.opponentBattleHelmet = (ImageView) findViewById(R.id.opponentBattleHelmet);
@@ -94,6 +97,7 @@ public class Battle_Activity extends Activity {
         this.opponentBattleWeapon = (ImageView) findViewById(R.id.opponentBattleWeapon);
         this.opponentHealthBar =    (ProgressBar) findViewById(R.id.opponentHealthBar);
         this.opponentNameTextView = (TextView) findViewById(R.id.opponentNameText);
+        this.botHealth =         (TextView) findViewById(R.id.botHealth);
 
         this.attackButton =         (Button) findViewById(R.id.attackButton);
         this.attackRadios =         (RadioGroup) findViewById(R.id.attackRadios);
@@ -108,7 +112,7 @@ public class Battle_Activity extends Activity {
         initializePlayerIcons();
 
         attackButton.setEnabled(false);
-
+        //this.playerHealth.setText(player.getHealth());
         findOpponent();
     }
 
@@ -137,7 +141,7 @@ public class Battle_Activity extends Activity {
                 gameServerOutput.writeObject(player);
                 Thread.sleep(200);
                 opponent = (Player) gameServerInput.readObject();
-                turn = (Boolean) gameServerInput.readObject();
+                Battle_Activity.this.turn = (Boolean) gameServerInput.readObject();
                 defineAttackButtonAvailability();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -153,9 +157,11 @@ public class Battle_Activity extends Activity {
         protected void onPostExecute(Void aVoid) {
             initializeOpponentIcons();
             opponentHealthBar.setVisibility(View.VISIBLE);
+            botHealth.setVisibility(View.VISIBLE);
             opponentHealthBar.setProgress(opponent.getHealth());
+           // botHealth.setText(opponent.getHealth());
             MyApplication.ttobj.speak("Opponent found you are playing against "+opponent.getName(), TextToSpeech.QUEUE_FLUSH, null);
-            if (!turn)
+            if (!Battle_Activity.this.turn)
             {
                 new WaitForHitAsync().execute();
             }
@@ -194,7 +200,6 @@ public class Battle_Activity extends Activity {
             MyApplication.player = MediaPlayer.create(Battle_Activity.this, resId);
             MyApplication.player.setVolume(100,100);
             MyApplication.player.start();
-            turn = !turn;
             consoleText.append("[" + player.getCurrentTimeStamp() + "]" + "You have" + player.getConsoleText());
             updateHealthBar("player", player.getHealth());
             if (player.getHealth() <= 0)
@@ -204,14 +209,15 @@ public class Battle_Activity extends Activity {
                         .setMessage("You have been killed! Try your skills next time.")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Battle_Activity.this.finish();
-                            }
+                                Battle_Activity.this.finish();    }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
 
-            nullPlayerAndGuiFields(false);
+            player.setDefenceArea(null);
+            attackRadios.clearCheck();
+            Battle_Activity.this.turn = !Battle_Activity.this.turn;
             defineAttackButtonAvailability();
             super.onPostExecute(aVoid);
         }
@@ -230,8 +236,8 @@ public class Battle_Activity extends Activity {
     public void attackButtonPressed(View v)
    {
        attackButton.setEnabled(false);
-       //switchRadios();
-       turn = !turn;
+       switchRadios();
+       Battle_Activity.this.turn = ! Battle_Activity.this.turn;
        new AttackAsycn().execute();
    }
 
@@ -277,7 +283,8 @@ public class Battle_Activity extends Activity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
-            nullPlayerAndGuiFields(true);
+            player.setAttackArea(null);
+            defenseRadios.clearCheck();
             defineAttackButtonAvailability();
             new WaitForHitAsync().execute();
             super.onPostExecute(aVoid);
@@ -298,26 +305,13 @@ public class Battle_Activity extends Activity {
 
     private void defineAttackButtonAvailability()
     {
-        if (player.getAttackArea() != null && turn)
+        if (opponent != null &&player.getAttackArea() != null &&  Battle_Activity.this.turn)
         {
             attackButton.setEnabled(true);
         } else
         {
             attackButton.setEnabled(false);
         }
-    }
-
-    private void nullPlayerAndGuiFields(boolean attack)
-    {
-        if(!attack) {
-            player.setAttackArea(null);
-            attackRadios.clearCheck();
-        }
-        else {
-            player.setDefenceArea(null);
-            defenseRadios.clearCheck();
-        }
-
     }
 
     private void initializeOpponentIcons()
