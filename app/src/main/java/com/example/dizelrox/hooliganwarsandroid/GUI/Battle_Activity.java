@@ -44,7 +44,6 @@ public class Battle_Activity extends Activity {
     ImageView playerIcon;
     ProgressBar playerHealthBar;
     TextView playerNameTextView;
-    TextView playerHealth;
 
 
     ImageView opponentBattleHelmet;
@@ -55,7 +54,6 @@ public class Battle_Activity extends Activity {
     ImageView opponentIcon;
     ProgressBar opponentHealthBar;
     TextView opponentNameTextView;
-    TextView botHealth;
 
     Button attackButton;
     RadioGroup attackRadios;
@@ -87,7 +85,6 @@ public class Battle_Activity extends Activity {
         this.playerBattleWeapon =   (ImageView) findViewById(R.id.playerBattleWeapon);
         this.playerHealthBar =      (ProgressBar) findViewById(R.id.playerHealthBar);
         this.playerNameTextView =   (TextView) findViewById(R.id.playerNameText);
-        this.playerHealth =         (TextView) findViewById(R.id.playerHealth);
 
         this.opponentIcon =         (ImageView) findViewById(R.id.opponentBattleIcon);
         this.opponentBattleHelmet = (ImageView) findViewById(R.id.opponentBattleHelmet);
@@ -97,7 +94,6 @@ public class Battle_Activity extends Activity {
         this.opponentBattleWeapon = (ImageView) findViewById(R.id.opponentBattleWeapon);
         this.opponentHealthBar =    (ProgressBar) findViewById(R.id.opponentHealthBar);
         this.opponentNameTextView = (TextView) findViewById(R.id.opponentNameText);
-        this.botHealth =         (TextView) findViewById(R.id.botHealth);
 
         this.attackButton =         (Button) findViewById(R.id.attackButton);
         this.attackRadios =         (RadioGroup) findViewById(R.id.attackRadios);
@@ -157,9 +153,7 @@ public class Battle_Activity extends Activity {
         protected void onPostExecute(Void aVoid) {
             initializeOpponentIcons();
             opponentHealthBar.setVisibility(View.VISIBLE);
-            botHealth.setVisibility(View.VISIBLE);
             opponentHealthBar.setProgress(opponent.getHealth());
-           // botHealth.setText(opponent.getHealth());
             MyApplication.ttobj.speak("Opponent found you are playing against "+opponent.getName(), TextToSpeech.QUEUE_FLUSH, null);
             if (!Battle_Activity.this.turn)
             {
@@ -223,22 +217,13 @@ public class Battle_Activity extends Activity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        try {
-            gameServer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        super.onDestroy();
-    }
 
     public void attackButtonPressed(View v)
    {
-       attackButton.setEnabled(false);
-       switchRadios();
-       Battle_Activity.this.turn = ! Battle_Activity.this.turn;
-       new AttackAsycn().execute();
+           attackButton.setEnabled(false);
+           switchRadios();
+           Battle_Activity.this.turn = !Battle_Activity.this.turn;
+           new AttackAsycn().execute();
    }
 
     public class AttackAsycn extends AsyncTask<Void,String,Void>

@@ -60,14 +60,14 @@ public class GameInitialize {
         armArray[10] = new Armor("White Leather Boots", currentArmorArray[10], Type.LEGS, 0.2, "boots_2");
         armArray[11] = new Armor("Stone Defending Boots", currentArmorArray[11], Type.LEGS, 0.3, "boots_3");
 
-        wepArray[0] = new Weapon("Throwing Chain", currentWeaponArray[0], 10, "weapon_8");
-        wepArray[1] = new Weapon("Thor's Hammer", currentWeaponArray[1], 10, "weapon_1");
-        wepArray[2] = new Weapon("Elite Mace", currentWeaponArray[2], 10, "weapon_5");
-        wepArray[3] = new Weapon("Machete", currentWeaponArray[3], 15, "weapon_4");
-        wepArray[4] = new Weapon("Mistery Sword", currentWeaponArray[4], 15, "weapon_3");
-        wepArray[5] = new Weapon("Iron Mace", currentWeaponArray[5], 10, "weapon_7");
-        wepArray[6] = new Weapon("Royal Axe", currentWeaponArray[6], 20, "weapon_6");
-        wepArray[7] = new Weapon("CrossBow", currentWeaponArray[7], 20, "weapon_2");
+        wepArray[0] = new Weapon("Throwing Chain", currentWeaponArray[0], 20, "weapon_8");
+        wepArray[1] = new Weapon("Thor's Hammer", currentWeaponArray[1], 20, "weapon_1");
+        wepArray[2] = new Weapon("Elite Mace", currentWeaponArray[2], 20, "weapon_5");
+        wepArray[3] = new Weapon("Machete", currentWeaponArray[3], 30, "weapon_4");
+        wepArray[4] = new Weapon("Mistery Sword", currentWeaponArray[4], 30, "weapon_3");
+        wepArray[5] = new Weapon("Iron Mace", currentWeaponArray[5], 20, "weapon_7");
+        wepArray[6] = new Weapon("Royal Axe", currentWeaponArray[6], 40, "weapon_6");
+        wepArray[7] = new Weapon("CrossBow", currentWeaponArray[7], 40, "weapon_2");
 
         //   bot = new Player(wepArray, armArray);
 

@@ -96,7 +96,7 @@
                     android:id="@+id/playerNameText"
                     android:textColor="#ffffffff"
                     android:textStyle="bold"
-                    android:textSize="35dp" />
+                    android:textSize="35sp" />
 
                 <ProgressBar
                     style="?android:attr/progressBarStyleHorizontal"
@@ -106,16 +106,6 @@
                     android:progressDrawable="@drawable/healthprogressbar"
                     android:progress="20"
                     android:max="100" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/playerHealth"
-                    android:layout_gravity="left"
-                    android:textStyle="bold"
-                    android:textSize="35dp"
-                    android:textColor="#ffffffff" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -263,16 +253,6 @@
                     android:progress="0"
                     android:progressDrawable="@drawable/healthprogressbar"
                     android:visibility="gone" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/botHealth"
-                    android:layout_gravity="right"
-                    android:textStyle="bold"
-                    android:textSize="35dp"
-                    android:textColor="#ffffffff" />
 
                 <ImageView
                     android:layout_width="wrap_content"
