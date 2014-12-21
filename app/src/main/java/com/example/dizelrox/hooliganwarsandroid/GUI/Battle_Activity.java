@@ -32,7 +32,7 @@ import java.net.Socket;
 public class Battle_Activity extends Activity {
 
     volatile Player player;
-    Player opponent;
+    volatile Player opponent;
 
     TextView consoleText;
 
@@ -59,7 +59,7 @@ public class Battle_Activity extends Activity {
     RadioGroup attackRadios;
     RadioGroup defenseRadios;
 
-    Socket gameServer;
+    volatile Socket gameServer;
     ObjectOutputStream gameServerOutput;
     ObjectInputStream gameServerInput;
 
@@ -108,9 +108,11 @@ public class Battle_Activity extends Activity {
         initializePlayerIcons();
 
         attackButton.setEnabled(false);
-        //this.playerHealth.setText(player.getHealth());
         findOpponent();
     }
+
+
+
 
     public void findOpponent()
     {
@@ -129,6 +131,7 @@ public class Battle_Activity extends Activity {
                 gameServer = new Socket("dizel-services.ddns.net", 55555);
                 gameServerOutput = new ObjectOutputStream(gameServer.getOutputStream());
                 gameServerInput = new ObjectInputStream(gameServer.getInputStream());
+                gameServer.setSoTimeout(10000);
                 String message = "I just want to play";
                 gameServerOutput.writeObject(message);
                 player.setHealth(100);
@@ -151,15 +154,25 @@ public class Battle_Activity extends Activity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            initializeOpponentIcons();
-            opponentHealthBar.setVisibility(View.VISIBLE);
-            opponentHealthBar.setProgress(opponent.getHealth());
-            MyApplication.ttobj.speak("Opponent found you are playing against "+opponent.getName(), TextToSpeech.QUEUE_FLUSH, null);
-            if (!Battle_Activity.this.turn)
-            {
-                new WaitForHitAsync().execute();
+            if(opponent != null) {
+                initializeOpponentIcons();
+                opponentHealthBar.setVisibility(View.VISIBLE);
+                opponentHealthBar.setProgress(opponent.getHealth());
+                MyApplication.ttobj.speak("Opponent found you are playing against " + opponent.getName(), TextToSpeech.QUEUE_FLUSH, null);
+                if (!Battle_Activity.this.turn) {
+                    new WaitForHitAsync().execute();
+                }
             }
-            super.onPostExecute(aVoid);
+            else {
+                MyApplication.ttobj.speak("Opponent not found, please try again later", TextToSpeech.QUEUE_FLUSH, null);
+                try {
+                    gameServer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Battle_Activity.this.finish();
+                super.onPostExecute(aVoid);
+            }
         }
     }
 
